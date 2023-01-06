@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: root
+    password: g&rQ4TS&Xibxo^
+    url: jdbc:mariadb://unraid.dsrank.cn:3306/CommunityManagement
