@@ -4,3 +4,5 @@ spring:
     username: root
     password: g&rQ4TS&Xibxo^
     url: jdbc:mariadb://unraid.dsrank.cn:3306/CommunityManagement
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
