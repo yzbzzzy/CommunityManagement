@@ -46,6 +46,10 @@ public class AuthController {
             map.put("code",100);
             map.put("msg",e.getMessage());
             return new ResponseEntity<>(map, HttpStatus.OK);
+        }catch (UsernameNotFoundException e){
+            map.put("code",102);
+            map.put("msg",e.getMessage());
+            return new ResponseEntity<>(map, HttpStatus.OK);
         }
         // 认证成功后，将 token 存入响应头中返回
         HttpHeaders httpHeaders = new HttpHeaders();

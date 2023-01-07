@@ -35,7 +35,7 @@ public class AuthService {
         String userName = userLogin.getUsername();
         String password = userLogin.getPassword();
         // 根据登录名获取用户信息
-        Optional<DsUser> userOptional = Optional.of(userService.queryByName(userName));
+        Optional<DsUser> userOptional = Optional.ofNullable(userService.queryByName(userName));
         if (!userOptional.isPresent()) {
             throw new UsernameNotFoundException("User not found with userName: " + userName);
         }
@@ -80,6 +80,7 @@ public class AuthService {
         Map<String, Object> map = new HashMap<>();
         Optional<DsUser> registerOp = Optional.ofNullable(userService.queryByName(register.getUsername()));
         if(registerOp.isPresent()){
+            map.put("code",101);
             map.put("msg","用户已存在");
             return map;
         }
