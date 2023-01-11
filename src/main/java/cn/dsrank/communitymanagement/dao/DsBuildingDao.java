@@ -1,16 +1,17 @@
 package cn.dsrank.communitymanagement.dao;
 
-import cn.dsrank.communitymanagement.entity.DsUser;
+import cn.dsrank.communitymanagement.entity.DsBuilding;
+import cn.dsrank.communitymanagement.entity.DsBuildingInfo;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * (DsUser)表数据库访问层
+ * (DsBuilding)表数据库访问层
  *
  * @author makejava
- * @since 2023-01-06 21:39:39
+ * @since 2023-01-10 15:41:03
  */
-public interface DsUserDao {
+public interface DsBuildingDao {
 
     /**
      * 通过ID查询单条数据
@@ -18,7 +19,7 @@ public interface DsUserDao {
      * @param id 主键
      * @return 实例对象
      */
-    DsUser queryById(Integer id);
+    DsBuilding queryById(Integer id);
 
     /**
      * 查询指定行数据
@@ -27,32 +28,32 @@ public interface DsUserDao {
      * @param limit 查询条数
      * @return 对象列表
      */
-    List<DsUser> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+    List<DsBuilding> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
 
 
     /**
      * 通过实体作为筛选条件查询
      *
-     * @param dsUser 实例对象
+     * @param dsBuilding 实例对象
      * @return 对象列表
      */
-    List<DsUser> queryAll(DsUser dsUser);
+    List<DsBuilding> queryAll(DsBuilding dsBuilding);
 
     /**
      * 新增数据
      *
-     * @param dsUser 实例对象
+     * @param dsBuilding 实例对象
      * @return 影响行数
      */
-    int insert(DsUser dsUser);
+    int insert(DsBuilding dsBuilding);
 
     /**
      * 修改数据
      *
-     * @param dsUser 实例对象
+     * @param dsBuilding 实例对象
      * @return 影响行数
      */
-    int update(DsUser dsUser);
+    int update(DsBuilding dsBuilding);
 
     /**
      * 通过主键删除数据
@@ -62,8 +63,9 @@ public interface DsUserDao {
      */
     int deleteById(Integer id);
 
-    DsUser queryByName(String name);
+    Integer getLastId();
 
-    // 查询业主人数
-    int queryCount();
+    Integer getCount();
+
+    DsBuildingInfo getBuildInfo(int buildingId);
 }

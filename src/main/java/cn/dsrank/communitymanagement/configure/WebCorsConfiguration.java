@@ -23,16 +23,10 @@ public class WebCorsConfiguration implements WebMvcConfigurer {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOriginPatterns(Collections.singletonList("*"));
+        config.addAllowedMethod("*");
+        config.addAllowedHeader("*");
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Collections.singletonList("*"));
-        config.setAllowedMethods(Collections.singletonList("*"));
-        config.setAllowedHeaders(Collections.singletonList("*"));
-        // 暴露 header 中的其他属性给客户端应用程序
-        config.setExposedHeaders(Arrays.asList(
-                "Authorization", "X-Total-Count", "Link",
-                "Access-Control-Allow-Origin",
-                "Access-Control-Allow-Credentials"
-        ));
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }

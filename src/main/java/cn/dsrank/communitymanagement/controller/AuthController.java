@@ -4,6 +4,7 @@ import cn.dsrank.communitymanagement.constant.SecurityConstants;
 import cn.dsrank.communitymanagement.entity.DsUser;
 import cn.dsrank.communitymanagement.entity.JwtUser;
 import cn.dsrank.communitymanagement.service.DsUserService;
+import cn.dsrank.communitymanagement.service.DsUserinfoService;
 import cn.dsrank.communitymanagement.service.impl.AuthService;
 import cn.dsrank.communitymanagement.utils.StringUtils;
 import org.slf4j.Logger;
@@ -11,13 +12,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -35,9 +34,12 @@ public class AuthController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
+
+
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody DsUser loginer) {
         // 用户登录认证
+        System.out.println(loginer);
         HashMap<String, Object> map = new HashMap<>();
         JwtUser jwtUser = null;
         try {
@@ -55,14 +57,33 @@ public class AuthController {
         HttpHeaders httpHeaders = new HttpHeaders();
         // 添加 token 前缀 "Bearer "
         httpHeaders.set(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + jwtUser.getToken());
-
-        return new ResponseEntity<>(jwtUser.getUser(), httpHeaders, HttpStatus.OK);
+        map.put("code",200);
+        map.put("msg","success");
+        map.put("data",jwtUser);
+        return new ResponseEntity<>(map, httpHeaders, HttpStatus.OK);
 
     }
 
     @PostMapping("register")
     public Map<String,Object> register(@RequestBody DsUser register){
         Map<String, Object> map = authService.register(register);
+
+        return map;
+    }
+
+    @PostMapping("logout")
+    public Map<String,Object> logout() {
+        SecurityContextHolder.clearContext();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("code",200);
+        return map;
+    }
+
+    @GetMapping("/roles")
+    public Map<String,Object> role(String token){
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("code",200);
+        map.put("data",authService.getRole(token));
         return map;
     }
 

@@ -43,4 +43,10 @@ public class DsUserController {
         return this.dsUserService.queryById(id);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("count")
+    public int getCount(){
+        return  dsUserService.queryCount();
+    }
+
 }

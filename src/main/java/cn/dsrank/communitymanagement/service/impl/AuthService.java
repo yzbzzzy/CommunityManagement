@@ -2,7 +2,9 @@ package cn.dsrank.communitymanagement.service.impl;
 
 import cn.dsrank.communitymanagement.constant.UserRoleConstants;
 import cn.dsrank.communitymanagement.entity.DsUser;
+import cn.dsrank.communitymanagement.entity.DsUserinfo;
 import cn.dsrank.communitymanagement.entity.JwtUser;
+import cn.dsrank.communitymanagement.service.DsUserinfoService;
 import cn.dsrank.communitymanagement.utils.JwtUtils;
 import cn.dsrank.communitymanagement.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class AuthService {
 
     @Resource
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Resource
+    private DsUserinfoService dsUserinfoService;
 
     /**
      * 用户登录认证
@@ -71,10 +75,10 @@ public class AuthService {
      * <p>
      * 清除 Spring Security 上下文中的认证信息
      */
-    @PostMapping("logout")
     public void logout() {
         SecurityContextHolder.clearContext();
     }
+
 
     public Map<String,Object> register(DsUser register){
         Map<String, Object> map = new HashMap<>();
@@ -90,10 +94,27 @@ public class AuthService {
                 ,salt
                 ,0);
         userService.insert(dsUser);
+        DsUserinfo userinfo = new DsUserinfo();
+        userinfo.setUserid(userService.queryByName(dsUser.getUsername()).getId());
+        dsUserinfoService.insert(userinfo);
         map.put("code",200);
         map.put("msg","注册成功");
         return map;
     }
+    public Map<String,Object> getRole(String token){
+        String username = JwtUtils.getUserName(token);
+        HashMap<String, Object> map = new HashMap<>();
+        DsUser user = userService.queryByName(username);
+        System.out.println(user.toString());
+        DsUserinfo info = dsUserinfoService.queryById(user.getId());
+        System.out.println(info.toString());
+        map.put("name",user.getUsername());
+        map.put("roles",user.getIdentity()==1?UserRoleConstants.ROLE_ADMIN:UserRoleConstants.ROLE_USER);
+        map.put("avatar",info.getIcon());
+        map.put("introduction","");
+        return map;
+    }
+
 
 
 }

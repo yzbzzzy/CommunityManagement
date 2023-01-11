@@ -11,6 +11,10 @@
         <result property="identity" column="identity" jdbcType="INTEGER"/>
     </resultMap>
 
+    <select id="queryCount" resultType="java.lang.Integer">
+        select count(1) from ds_User where identity!=1
+    </select>
+
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select

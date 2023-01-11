@@ -81,4 +81,9 @@ public class DsUserServiceImpl implements DsUserService {
     public DsUser queryByName(String name) {
         return this.dsUserDao.queryByName(name);
     }
+
+    @Override
+    public int queryCount() {
+        return this.dsUserDao.queryCount();
+    }
 }

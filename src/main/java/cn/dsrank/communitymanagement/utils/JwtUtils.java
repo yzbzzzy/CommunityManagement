@@ -119,4 +119,9 @@ public final class JwtUtils {
                     .parseClaimsJws(token)
                     .getBody();
     }
+
+    public static String getUserName(String token){
+        Claims claims = getTokenBody(token);
+        return claims.getSubject();
+    }
 }

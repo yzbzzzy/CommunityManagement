@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dsrank.communitymanagement.dao.DsBuildingDao">
+
+    <resultMap id="BaseResultMap" type="cn.dsrank.communitymanagement.entity.DsBuilding">
+        <!--@Table ds_Building-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="desc" column="desc" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="BuildInfo" type="cn.dsrank.communitymanagement.entity.DsBuildingInfo">
+        <result property="floors" column="floors" jdbcType="INTEGER"/>
+        <result property="occRooms" column="occRooms" jdbcType="INTEGER"/>
+        <result property="empRooms" column="empRooms" jdbcType="INTEGER"/>
+        <result property="preResidents" column="preResidents" jdbcType="INTEGER"/>
+        <result property="desc" column="desc" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, `desc`
+        from CommunityManagement.ds_Building
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, desc
+        from CommunityManagement.ds_Building
+        limit #{offset}, #{limit}
+    </select>
+    <select id="getLastId" resultType="java.lang.Integer">
+        select id from CommunityManagement.ds_Building ORDER BY id desc LIMIT 1
+    </select>
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, desc
+        from CommunityManagement.ds_Building
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="desc != null and desc != ''">
+                and desc = #{desc}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into CommunityManagement.ds_Building(id,`desc`)
+        values (#{id},#{desc})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update CommunityManagement.ds_Building
+        <set>
+            <if test="desc != null and desc != ''">
+                desc = #{desc},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from CommunityManagement.ds_Building where id = #{id}
+    </delete>
+
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(1) from ds_Building;
+    </select>
+
+    <select id="getBuildInfo" resultMap="BuildInfo">
+        with tbs as(select 'floors' as name,count(1) as value from (
+            select floor from CommunityManagement.ds_Room where buildingId =#{buildingId} GROUP BY floor) as tmp union all
+        select 'occRooms' as name, count(1) as value from CommunityManagement.ds_Room where buildingId = #{buildingId} and status =1 union all
+        select 'empRooms' as name, count(1) as value from CommunityManagement.ds_Room where buildingId = #{buildingId} and status =0 union all
+        select 'preResidents' as name, count(1) as value  from CommunityManagement.ds_Room where buildingId =#{buildingId} and floor =1
+            )
+        SELECT a.value as 'floors', b.value as 'occRooms', c.value as 'empRooms', d.VALUE as 'preResidents' FROM tbs a,tbs b,tbs c,tbs d WHERE a.name='floors' AND b.name='occRooms' AND c.name='empRooms' and d.name = 'preResidents'
+    </select>
+</mapper>
