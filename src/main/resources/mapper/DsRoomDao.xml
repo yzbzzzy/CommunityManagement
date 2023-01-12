@@ -11,7 +11,9 @@
         <result property="status" column="status" jdbcType="INTEGER"/>
     </resultMap>
 
-
+    <select id="getRandRoom" resultMap="BaseResultMap">
+        with tmp as (select  * from ds_Room where status =0) select * from tmp order by rand() limit 1
+    </select>
 
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
