@@ -9,4 +9,5 @@ public class DsBuildingInfo {
     private Integer empRooms;
     private Integer occRooms;
     private String desc;
+    private float area;
 }

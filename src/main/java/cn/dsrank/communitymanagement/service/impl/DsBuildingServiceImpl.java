@@ -84,9 +84,9 @@ public class DsBuildingServiceImpl implements DsBuildingService {
 
     @Transactional
     @Override
-    public void addBuilding(int f,int r,String desc){
+    public void addBuilding(int f,int r,String desc,float area){
         Optional<Integer> lastId = Optional.ofNullable(this.dsBuildingDao.getLastId());
-        dsBuildingDao.insert(new DsBuilding(lastId.orElse(0)+1,desc));
+        dsBuildingDao.insert(new DsBuilding(lastId.orElse(0)+1,desc,area));
         for(int i =1;i<=f;i++){
             for(int j = 1;j<=r;j++){
                 dsRoomService.insert(new DsRoom(lastId.orElse(0)+1,i,j,0));
@@ -101,6 +101,7 @@ public class DsBuildingServiceImpl implements DsBuildingService {
         for (int i = 1; i <= count; i++) {
             DsBuildingInfo info = dsBuildingDao.getBuildInfo(i);
             info.setDesc(dsBuildingDao.queryById(i).getDesc());
+            info.setArea(dsBuildingDao.queryById(i).getArea());
             infos.add(info);
         }
         return infos;

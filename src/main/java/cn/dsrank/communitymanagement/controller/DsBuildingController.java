@@ -45,7 +45,8 @@ public class DsBuildingController {
         try {
             dsBuildingService.addBuilding(Integer.valueOf((String) params.get("floors")),
                     Integer.valueOf((String)params.get("residents")),
-                    (String)params.get("desc"));
+                    (String)params.get("desc"),
+                    Float.valueOf((String)params.get("area")));
         }catch (Exception e){
             e.printStackTrace();
             map.put("code",103);
@@ -56,6 +57,7 @@ public class DsBuildingController {
         map.put("msg","添加成功");
         return map;
     }
+
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("infos")

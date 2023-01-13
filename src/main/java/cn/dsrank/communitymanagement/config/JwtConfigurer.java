@@ -1,4 +1,4 @@
-package cn.dsrank.communitymanagement.configure;
+package cn.dsrank.communitymanagement.config;
 
 
 import cn.dsrank.communitymanagement.filter.JwtAuthorizationFilter;

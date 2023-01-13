@@ -48,4 +48,10 @@ class CommunityManagementApplicationTests {
 
     }
 
+    @Test
+    void testSelect(){
+        Integer integer = dsUserinfoDao.queryCountBefore(1);
+        System.out.println(integer);
+    }
+
 }

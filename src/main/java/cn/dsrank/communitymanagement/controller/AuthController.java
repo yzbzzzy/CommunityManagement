@@ -7,6 +7,7 @@ import cn.dsrank.communitymanagement.service.DsUserService;
 import cn.dsrank.communitymanagement.service.DsUserinfoService;
 import cn.dsrank.communitymanagement.service.impl.AuthService;
 import cn.dsrank.communitymanagement.utils.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

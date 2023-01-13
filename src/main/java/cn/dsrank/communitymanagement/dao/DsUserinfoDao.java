@@ -2,6 +2,8 @@ package cn.dsrank.communitymanagement.dao;
 
 import cn.dsrank.communitymanagement.entity.DsUserinfo;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,4 +65,6 @@ public interface DsUserinfoDao {
     int deleteById(Integer userid);
 
     DsUserinfo getRandUserinfo();
+
+    Integer queryCountBefore(int feeId);
 }

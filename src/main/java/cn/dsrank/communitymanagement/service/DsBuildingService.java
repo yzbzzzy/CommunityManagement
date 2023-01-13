@@ -54,7 +54,9 @@ public interface DsBuildingService {
      */
     boolean deleteById(Integer id);
 
-    void addBuilding(int f,int r,String desc);
+    void addBuilding(int f,int r,String desc,float area);
 
     List<DsBuildingInfo> getBuildingInfo();
+
+
 }

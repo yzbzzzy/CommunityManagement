@@ -16,6 +16,8 @@ public class DsBuilding implements Serializable {
     private String desc;
 
 
+    private float area;
+
     public Integer getId() {
         return id;
     }
@@ -32,14 +34,26 @@ public class DsBuilding implements Serializable {
         this.desc = desc;
     }
 
+    public float getArea() {
+        return area;
+    }
+
+    public void setArea(float area) {
+        this.area = area;
+    }
+
     public DsBuilding(Integer id, String desc) {
         this.id = id;
         this.desc = desc;
     }
 
     public DsBuilding() {
+
     }
 
-
-
+    public DsBuilding(Integer id, String desc, float area) {
+        this.id = id;
+        this.desc = desc;
+        this.area = area;
+    }
 }
