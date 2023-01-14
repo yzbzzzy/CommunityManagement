@@ -87,4 +87,7 @@
             )
         SELECT a.value as 'floors', b.value as 'occRooms', c.value as 'empRooms', d.VALUE as 'preResidents' FROM tbs a,tbs b,tbs c,tbs d WHERE a.name='floors' AND b.name='occRooms' AND c.name='empRooms' and d.name = 'preResidents'
     </select>
+    <select id="getAreaByUserId" resultType="java.lang.Float">
+        select area from ds_Building where ds_Building.id = (select buildingId from CommunityManagement.ds_UserInfo where userId=#{userid})
+    </select>
 </mapper>

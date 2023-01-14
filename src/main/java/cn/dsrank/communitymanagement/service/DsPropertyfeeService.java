@@ -2,6 +2,7 @@ package cn.dsrank.communitymanagement.service;
 
 import cn.dsrank.communitymanagement.entity.DsPropertyfee;
 import cn.dsrank.communitymanagement.vo.TableFee;
+import cn.dsrank.communitymanagement.vo.UserTableFee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -61,5 +62,8 @@ public interface DsPropertyfeeService {
 
     List<TableFee> queryByPage(int start, int count);
 
+    Integer queryUserPayCount(int userid);
+
+    List<UserTableFee> queryUserPayData(int userid,int start,int count);
 
 }

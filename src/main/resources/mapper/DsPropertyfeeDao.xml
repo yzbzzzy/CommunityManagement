@@ -107,6 +107,14 @@
         select count(1) from CommunityManagement.ds_PropertyFee
     </select>
     <select id="queryByPage" resultMap="BaseResultMap">
-        select * from CommunityManagement.ds_PropertyFee limit #{start},#{count}
+        select * from CommunityManagement.ds_PropertyFee order by  `time`  desc limit #{start},#{count}
+    </select>
+
+    <select id="queryUserPayCount" resultType="java.lang.Integer">
+        select count(1) from ds_PropertyFee where ds_PropertyFee.time > (select in_time from ds_UserInfo where userId = #{userid}) order by time desc
+    </select>
+
+    <select id="queryUserByPage" resultMap="BaseResultMap">
+        select * from ds_PropertyFee where ds_PropertyFee.time > (select in_time from ds_UserInfo where userId = #{userid}) order by time desc limit #{start},#{count}
     </select>
 </mapper>

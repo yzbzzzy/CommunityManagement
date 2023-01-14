@@ -68,12 +68,12 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into ds_Bill(userId, propertyFeeId, date)
-        values (#{userid}, #{propertyfeeid}, #{date})
+        insert into ds_Bill(userId, propertyFeeId)
+        values (#{userid}, #{propertyfeeid})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into ds_Bill(userId, propertyFeeId, date)
+        insert into ds_Bill(userId, propertyFeeId, `date`)
         values
         <foreach collection="entities" item="entity" separator=",">
         (#{entity.userid}, #{entity.propertyfeeid}, #{entity.date})
@@ -81,7 +81,7 @@
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into ds_Bill(userId, propertyFeeId, date)
+        insert into ds_Bill(userId, propertyFeeId, `date`)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.userid}, #{entity.propertyfeeid}, #{entity.date})
@@ -116,6 +116,10 @@
 
     <select id="queryExistCount" resultType="java.lang.Integer">
         select count(1) from ds_Bill where  propertyfeeid = #{id}
+    </select>
+
+    <select id="queryUserBill" resultMap="BaseResultMap">
+        select * from ds_Bill where userid = #{userid} and propertyFeeId = #{feeId}
     </select>
 </mapper>
 

@@ -68,4 +68,6 @@ public interface DsBuildingDao {
     Integer getCount();
 
     DsBuildingInfo getBuildInfo(int buildingId);
+
+    float getAreaByUserId(int userid);
 }

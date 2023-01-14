@@ -53,4 +53,6 @@ public interface DsBillService {
      */
     boolean deleteById(Integer id);
 
+    DsBill queryStatus(int userid,int propertyFeeId);
+
 }

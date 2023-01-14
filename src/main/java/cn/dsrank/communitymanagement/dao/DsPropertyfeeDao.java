@@ -83,5 +83,9 @@ public interface DsPropertyfeeDao {
 
     List<DsPropertyfee> queryByPage(int start,int count);
 
+    Integer queryUserPayCount(int userid);
+
+    List<DsPropertyfee> queryUserByPage(int userid,int start,int count);
+
 }
 

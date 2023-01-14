@@ -1,13 +1,18 @@
 package cn.dsrank.communitymanagement.controller;
 
+import cn.dsrank.communitymanagement.dao.DsUserDao;
 import cn.dsrank.communitymanagement.entity.DsBill;
+import cn.dsrank.communitymanagement.entity.DsUser;
+import cn.dsrank.communitymanagement.entity.ResultMap;
 import cn.dsrank.communitymanagement.service.DsBillService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * (DsBill)表控制层
@@ -16,7 +21,7 @@ import javax.annotation.Resource;
  * @since 2023-01-13 11:22:32
  */
 @RestController
-@RequestMapping("dsBill")
+@RequestMapping("/api/bill")
 public class DsBillController {
     /**
      * 服务对象
@@ -24,6 +29,8 @@ public class DsBillController {
     @Resource
     private DsBillService dsBillService;
 
+    @Resource
+    private DsUserDao dsUserDao;
     /**
      * 分页查询
      *
@@ -80,6 +87,25 @@ public class DsBillController {
         return ResponseEntity.ok(this.dsBillService.deleteById(id));
     }
 
+
+    @Transactional
+    @PostMapping("pay")
+    public ResultMap<Object> pay(@RequestBody Map data){
+        ResultMap<Object> result = new ResultMap<>();
+        DsBill bill = new DsBill();
+        bill.setPropertyfeeid((Integer) data.get("feeid"));
+        bill.setUserid(dsUserDao.queryByName((String)data.get("name")).getId());
+        try {
+            DsBill insert = dsBillService.insert(bill);
+            result.setCode(200);
+            result.setMsg("支付成功");
+
+        }catch (Exception e){
+            result.setCode(301);
+            result.setMsg("出现错误");
+        }
+        return result;
+    }
 
 }
 

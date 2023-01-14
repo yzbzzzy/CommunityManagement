@@ -81,5 +81,7 @@ public interface DsBillDao {
 
     Integer queryExistCount(int id);
 
+    DsBill queryUserBill(int userid,int feeId);
+
 }
 

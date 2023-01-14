@@ -1,11 +1,14 @@
 package cn.dsrank.communitymanagement.service.impl;
 
 import cn.dsrank.communitymanagement.dao.DsBillDao;
+import cn.dsrank.communitymanagement.dao.DsBuildingDao;
 import cn.dsrank.communitymanagement.dao.DsUserinfoDao;
 import cn.dsrank.communitymanagement.entity.DsPropertyfee;
 import cn.dsrank.communitymanagement.dao.DsPropertyfeeDao;
+import cn.dsrank.communitymanagement.service.DsBuildingService;
 import cn.dsrank.communitymanagement.service.DsPropertyfeeService;
 import cn.dsrank.communitymanagement.vo.TableFee;
+import cn.dsrank.communitymanagement.vo.UserTableFee;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
@@ -33,6 +36,9 @@ public class DsPropertyfeeServiceImpl implements DsPropertyfeeService {
     private DsUserinfoDao dsUserinfoDao;
     @Resource
     private DsBillDao dsBillDao;
+
+    @Resource
+    private DsBuildingDao dsBuildingDao;
     /**
      * 通过ID查询单条数据-
      *
@@ -110,6 +116,28 @@ public class DsPropertyfeeServiceImpl implements DsPropertyfeeService {
             i.setCount(Optional.ofNullable(dsUserinfoDao.queryCountBefore(i.getId())).orElse(0));
         });
         return res;
+    }
+
+    @Override
+    public Integer queryUserPayCount(int userid) {
+        return dsPropertyfeeDao.queryUserPayCount(userid);
+    }
+
+    @Override
+    public List<UserTableFee> queryUserPayData(int userid, int start, int count) {
+        List<DsPropertyfee> data = dsPropertyfeeDao.queryUserByPage(userid, start, count);
+        ArrayList<UserTableFee> fees = new ArrayList<UserTableFee>();
+        data.forEach(e->{
+            UserTableFee i = new UserTableFee(e);
+            i.setStatus(dsBillDao.queryUserBill(userid,e.getId())==null?0:1);
+//            if(i.getStatus()==1){
+//                i.setTime(dsBillDao.queryUserBill(userid,e.getId()).getDate());
+//            }
+            i.setPrice(i.getPrice()*dsBuildingDao.getAreaByUserId(userid));
+            fees.add(i);
+        });
+
+        return fees;
     }
 
 }

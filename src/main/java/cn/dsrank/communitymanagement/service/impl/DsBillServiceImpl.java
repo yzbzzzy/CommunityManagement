@@ -79,4 +79,9 @@ public class DsBillServiceImpl implements DsBillService {
     public boolean deleteById(Integer id) {
         return this.dsBillDao.deleteById(id) > 0;
     }
+
+    @Override
+    public DsBill queryStatus(int userid, int propertyFeeId) {
+        return null;
+    }
 }

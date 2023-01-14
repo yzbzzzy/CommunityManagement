@@ -1,9 +1,12 @@
 package cn.dsrank.communitymanagement.controller;
 
 import cn.dsrank.communitymanagement.entity.DsPropertyfee;
+import cn.dsrank.communitymanagement.entity.DsUser;
 import cn.dsrank.communitymanagement.entity.ResultMap;
 import cn.dsrank.communitymanagement.service.DsPropertyfeeService;
+import cn.dsrank.communitymanagement.service.DsUserService;
 import cn.dsrank.communitymanagement.vo.TableFee;
+import cn.dsrank.communitymanagement.vo.UserTableFee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.relational.core.sql.In;
@@ -16,6 +19,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * (DsPropertyfee)表控制层
@@ -24,7 +28,7 @@ import java.util.Map;
  * @since 2023-01-13 11:03:58
  */
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
+
 @RequestMapping("/api/fee")
 public class DsPropertyfeeController {
     /**
@@ -33,6 +37,8 @@ public class DsPropertyfeeController {
     @Resource
     private DsPropertyfeeService dsPropertyfeeService;
 
+    @Resource
+    private DsUserService dsUserService;
     /**
      * 分页查询
      *
@@ -51,6 +57,7 @@ public class DsPropertyfeeController {
      * @param id 主键
      * @return 单条数据
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("{id}")
     public ResponseEntity<DsPropertyfee> queryById(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(this.dsPropertyfeeService.queryById(id));
@@ -62,6 +69,7 @@ public class DsPropertyfeeController {
      * @param dsPropertyfee 实体
      * @return 新增结果
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<DsPropertyfee> add(DsPropertyfee dsPropertyfee) {
         return ResponseEntity.ok(this.dsPropertyfeeService.insert(dsPropertyfee));
@@ -73,6 +81,7 @@ public class DsPropertyfeeController {
      * @param dsPropertyfee 实体
      * @return 编辑结果
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping
     public ResponseEntity<DsPropertyfee> edit(DsPropertyfee dsPropertyfee) {
         return ResponseEntity.ok(this.dsPropertyfeeService.update(dsPropertyfee));
@@ -84,11 +93,12 @@ public class DsPropertyfeeController {
      * @param id 主键
      * @return 删除是否成功
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping
     public ResponseEntity<Boolean> deleteById(Integer id) {
         return ResponseEntity.ok(this.dsPropertyfeeService.deleteById(id));
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("querypage")
     public ResultMap<List<TableFee>> getPageData(@RequestBody Map data){
         Integer count = (Integer) data.get("count");
@@ -101,6 +111,7 @@ public class DsPropertyfeeController {
         return resultMap;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("add")
     public ResultMap<Object> addFee(@RequestBody DsPropertyfee form){
         ResultMap<Object> map = new ResultMap<>();
@@ -117,6 +128,7 @@ public class DsPropertyfeeController {
 
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("count")
     public ResultMap<Integer> getCount(){
         Integer count = dsPropertyfeeService.queryCount();
@@ -127,6 +139,32 @@ public class DsPropertyfeeController {
         return result;
     }
 
+
+    @PostMapping("/queryUserPayCount")
+    public ResultMap<Integer> queryUserPayCount(@RequestBody Map data){
+        ResultMap<Integer> re = new ResultMap<>();
+        Optional<Integer> optional =  Optional.ofNullable(dsPropertyfeeService.queryUserPayCount(dsUserService.queryByName((String)data.get("name")).getId()));
+        re.setData(optional.orElse(0));
+        re.setCode(200);
+        re.setMsg("成功");
+        return  re;
+    }
+
+    @PostMapping("queryUserBillData")
+    public ResultMap<List<UserTableFee>>  queryUserPayData(@RequestBody Map data){
+        ResultMap<List<UserTableFee>> re = new ResultMap<>();
+        Integer count = (Integer) data.get("count");
+        Integer page = (Integer) data.get("page");
+        List<UserTableFee> userTableFees = dsPropertyfeeService.queryUserPayData(
+                dsUserService.queryByName((String) data.get("name")).getId()
+                , (page - 1) * count
+                , count
+        );
+        re.setData(userTableFees);
+        re.setCode(200);
+        re.setMsg("成功");
+        return re;
+    }
 
 }
 
