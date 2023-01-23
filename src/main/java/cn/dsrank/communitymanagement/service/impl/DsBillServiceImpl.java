@@ -3,12 +3,15 @@ package cn.dsrank.communitymanagement.service.impl;
 import cn.dsrank.communitymanagement.entity.DsBill;
 import cn.dsrank.communitymanagement.dao.DsBillDao;
 import cn.dsrank.communitymanagement.service.DsBillService;
+import cn.dsrank.communitymanagement.vo.UserBill;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * (DsBill)表服务实现类
@@ -83,5 +86,15 @@ public class DsBillServiceImpl implements DsBillService {
     @Override
     public DsBill queryStatus(int userid, int propertyFeeId) {
         return null;
+    }
+
+    @Override
+    public List<UserBill> queryUserBillByPage(int userid, int page, int count) {
+        return dsBillDao.queryUserBillByPage(userid,page,count);
+    }
+
+    @Override
+    public Integer queryUserBillCount(int userid) {
+        return Optional.ofNullable(dsBillDao.queryUserBillCount(userid)).orElse(0);
     }
 }

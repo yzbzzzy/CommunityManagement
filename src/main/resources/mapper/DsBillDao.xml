@@ -10,6 +10,14 @@
         <result property="date" column="date" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <resultMap id="UserBill" type="cn.dsrank.communitymanagement.vo.UserBill">
+        <result property="area" column="area" jdbcType="FLOAT"/>
+        <result property="price" column="price" jdbcType="FLOAT"/>
+        <result property="date" column="date" jdbcType="TIMESTAMP"/>
+        <result property="desc" column="desc"  jdbcType="VARCHAR"/>
+
+    </resultMap>
+
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
@@ -120,6 +128,24 @@
 
     <select id="queryUserBill" resultMap="BaseResultMap">
         select * from ds_Bill where userid = #{userid} and propertyFeeId = #{feeId}
+    </select>
+
+    <select id="queryUserBillByPage" resultMap="UserBill">
+        select bill.date,fee.price,building.area ,fee.`desc` from ds_Bill  bill
+        LEFT JOIN
+        ds_PropertyFee  fee on bill.propertyFeeId=fee.id
+        LEFT JOIN
+        ds_Building  building on building.id in  (select buildingId from ds_UserInfo where userId = #{userid} )
+        where userid = #{userid}
+        LIMIT  #{page},#{count}
+    </select>
+    <select id="queryUserBillCount" resultType="java.lang.Integer">
+        select count(1) from ds_Bill  bill
+        LEFT JOIN
+        ds_PropertyFee  fee on bill.propertyFeeId=fee.id
+        LEFT JOIN
+        ds_Building  building on building.id in  (select buildingId from ds_UserInfo where userId = 142 ) where userid =#{userid}
+
     </select>
 </mapper>
 

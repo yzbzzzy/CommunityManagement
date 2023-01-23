@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dsrank.communitymanagement.dao.DsFeedbackDao">
+
+    <resultMap id="BaseResultMap" type="cn.dsrank.communitymanagement.entity.DsFeedback">
+        <!--@Table ds_FeedBack-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userid" column="userId" jdbcType="INTEGER"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="date" column="date" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="TableFeedback" type="cn.dsrank.communitymanagement.vo.TableFeedback">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="date" column="date" jdbcType="TIMESTAMP"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, userId, content, `date`, status, title
+        from ds_FeedBack
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, userId, content, `date`, status, title
+        from ds_FeedBack
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userid != null">
+                and userId = #{userid}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="date != null">
+                and date = #{date}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, userId, content, `date`, status, title
+        from CommunityManagement.ds_FeedBack
+    </select>
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from ds_FeedBack
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userid != null">
+                and userId = #{userid}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="date != null">
+                and `date` = #{date}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into ds_FeedBack(userId, content,  status, title)
+        values (#{userid}, #{content}, #{status}, #{title})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into ds_FeedBack(userId, content, `date`, status, title)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.userid}, #{entity.content}, #{entity.date}, #{entity.status}, #{entity.title})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into ds_FeedBack(userId, content, `date`, status, title)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userid}, #{entity.content}, #{entity.date}, #{entity.status}, #{entity.title})
+        </foreach>
+        on duplicate key update
+        userId = values(userId),
+        content = values(content),
+        `date` = values(date),
+        status = values(status),
+        title = values(title)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update ds_FeedBack
+        <set>
+            <if test="userid != null">
+                userId = #{userid},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="date != null">
+                `date` = #{date},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from ds_FeedBack where id = #{id}
+    </delete>
+
+    <select id="queryTotalCount" resultType="java.lang.Integer">
+        select count(1) from ds_FeedBack
+    </select>
+
+    <select id="queryTableFeedback" resultMap="TableFeedback">
+        select feedback.id,feedback.date,feedback.title,feedback.status,user.username from ds_FeedBack feedback LEFT JOIN
+        ds_User user on  feedback.userId = user.id ORDER BY feedback.date desc  limit #{page},#{count}
+    </select>
+</mapper>
+

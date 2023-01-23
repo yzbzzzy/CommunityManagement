@@ -5,6 +5,7 @@ import cn.dsrank.communitymanagement.entity.DsBill;
 import cn.dsrank.communitymanagement.entity.DsUser;
 import cn.dsrank.communitymanagement.entity.ResultMap;
 import cn.dsrank.communitymanagement.service.DsBillService;
+import cn.dsrank.communitymanagement.vo.UserBill;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -107,5 +111,34 @@ public class DsBillController {
         return result;
     }
 
+    @PostMapping("queryUserBillByPage")
+    public ResultMap<List<UserBill>> queryUserBillByPage(@RequestBody Map data){
+        ResultMap<List<UserBill>> resultMap = new ResultMap<>();
+        int page = (int)data.get("page");
+        int count = (int)data.get("count");
+        try {
+            List<UserBill> list = dsBillService.queryUserBillByPage(dsUserDao.queryByName((String) data.get("name")).getId(),
+                    (page - 1) * count,
+                    count);
+            resultMap.setData(list);
+            resultMap.setCode(200);
+            resultMap.setMsg("成功");
+        }catch (Exception e)
+        {
+            resultMap.setCode(301);
+            resultMap.setMsg("出现错误");
+        }
+
+        return resultMap;
+    }
+
+    @PostMapping("queryUserBillCount")
+    public ResultMap<Integer> queryUserBillCount(@RequestBody Map data){
+        ResultMap<Integer> res = new ResultMap<>();
+        res.setData(dsBillService.queryUserBillCount(dsUserDao.queryByName((String)data.get("name")).getId()));
+        res.setCode(200);
+        res.setMsg("成功");
+        return res;
+    }
 }
 
