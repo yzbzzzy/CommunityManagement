@@ -2,6 +2,7 @@ package cn.dsrank.communitymanagement.service;
 
 import cn.dsrank.communitymanagement.entity.DsBill;
 import cn.dsrank.communitymanagement.vo.UserBill;
+import cn.dsrank.communitymanagement.vo.UserPayRate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -61,4 +62,6 @@ public interface DsBillService {
     List<UserBill> queryUserBillByPage(int userid,int page,int count);
 
     Integer queryUserBillCount(int userid);
+
+    UserPayRate queryPayRate();
 }

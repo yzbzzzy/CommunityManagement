@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dsrank.communitymanagement.dao.DsStallbillDao">
+
+    <resultMap id="BaseResultMap" type="cn.dsrank.communitymanagement.entity.DsStallbill">
+        <!--@Table ds_StallBill-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userid" column="userId" jdbcType="INTEGER"/>
+        <result property="starttime" column="startTime" jdbcType="TIMESTAMP"/>
+        <result property="endtime" column="endTime" jdbcType="TIMESTAMP"/>
+        <result property="fee" column="fee" jdbcType="NUMERIC"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, userId, startTime, endTime, fee
+        from ds_StallBill
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, userId, startTime, endTime, fee
+        from ds_StallBill
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userid != null">
+                and userId = #{userid}
+            </if>
+            <if test="starttime != null">
+                and startTime = #{starttime}
+            </if>
+            <if test="endtime != null">
+                and endTime = #{endtime}
+            </if>
+            <if test="fee != null">
+                and fee = #{fee}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, userId, startTime, endTime, fee
+        from CommunityManagement.ds_StallBill
+    </select>
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from ds_StallBill
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userid != null">
+                and userId = #{userid}
+            </if>
+            <if test="starttime != null">
+                and startTime = #{starttime}
+            </if>
+            <if test="endtime != null">
+                and endTime = #{endtime}
+            </if>
+            <if test="fee != null">
+                and fee = #{fee}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into ds_StallBill(userId, startTime, endTime, fee)
+        values (#{userid}, #{starttime}, #{endtime}, #{fee})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into ds_StallBill(userId, startTime, endTime, fee)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.userid}, #{entity.starttime}, #{entity.endtime}, #{entity.fee})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into ds_StallBill(userId, startTime, endTime, fee)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userid}, #{entity.starttime}, #{entity.endtime}, #{entity.fee})
+        </foreach>
+        on duplicate key update
+        userId = values(userId),
+        startTime = values(startTime),
+        endTime = values(endTime),
+        fee = values(fee)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update ds_StallBill
+        <set>
+            <if test="userid != null">
+                userId = #{userid},
+            </if>
+            <if test="starttime != null">
+                startTime = #{starttime},
+            </if>
+            <if test="endtime != null">
+                endTime = #{endtime},
+            </if>
+            <if test="fee != null">
+                fee = #{fee},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from ds_StallBill where id = #{id}
+    </delete>
+    <insert id="postCarStart">
+        insert into ds_StallBill(userId) values(#{id})
+    </insert>
+    <update id="postCarEnd">
+        update ds_StallBill set endTime = current_time() where userid = #{id} order by id desc limit 1
+    </update>
+    <select id="getEnd" resultMap="BaseResultMap">
+        select * from ds_StallBill where userId = #{id} order by id desc limit 1
+    </select>
+    <update id="setFee">
+        update ds_StallBill set Fee = #{fee} where id = #{id}
+    </update>
+    <select id="queryUserBill" resultMap="BaseResultMap">
+        select * from ds_StallBill where userId = #{id} order by startTime desc
+    </select>
+</mapper>
+

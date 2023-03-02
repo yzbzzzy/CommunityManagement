@@ -4,6 +4,7 @@ import cn.dsrank.communitymanagement.entity.DsBill;
 import cn.dsrank.communitymanagement.dao.DsBillDao;
 import cn.dsrank.communitymanagement.service.DsBillService;
 import cn.dsrank.communitymanagement.vo.UserBill;
+import cn.dsrank.communitymanagement.vo.UserPayRate;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -96,5 +97,13 @@ public class DsBillServiceImpl implements DsBillService {
     @Override
     public Integer queryUserBillCount(int userid) {
         return Optional.ofNullable(dsBillDao.queryUserBillCount(userid)).orElse(0);
+    }
+
+    @Override
+    public UserPayRate queryPayRate() {
+        UserPayRate userPayRate = this.dsBillDao.queryPayRate();
+        userPayRate.setPaid(Optional.ofNullable(userPayRate.getPaid()).orElse(0));
+        userPayRate.setTotal(Optional.ofNullable(userPayRate.getTotal()).orElse(0));
+        return userPayRate;
     }
 }

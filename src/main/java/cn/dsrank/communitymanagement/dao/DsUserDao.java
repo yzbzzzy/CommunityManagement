@@ -66,4 +66,6 @@ public interface DsUserDao {
 
     // 查询业主人数
     int queryCount();
+
+    List<DsUser> getUserByPage(int start, Integer count);
 }

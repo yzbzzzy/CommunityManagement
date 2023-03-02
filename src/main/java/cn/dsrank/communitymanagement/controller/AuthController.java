@@ -3,6 +3,7 @@ package cn.dsrank.communitymanagement.controller;
 import cn.dsrank.communitymanagement.constant.SecurityConstants;
 import cn.dsrank.communitymanagement.entity.DsUser;
 import cn.dsrank.communitymanagement.entity.JwtUser;
+import cn.dsrank.communitymanagement.entity.ResultMap;
 import cn.dsrank.communitymanagement.service.DsUserService;
 import cn.dsrank.communitymanagement.service.DsUserinfoService;
 import cn.dsrank.communitymanagement.service.impl.AuthService;
@@ -89,4 +90,19 @@ public class AuthController {
         return map;
     }
 
+    @PostMapping("resetPassword")
+    public ResultMap<Integer> resetPassword(@RequestBody Map data){
+        Integer id = (Integer) data.get("id");
+        String password = (String) data.get("password");
+        this.authService.resetPassword(id,password);
+        return new ResultMap<>(200,"成功",null);
+    }
+
+    @PostMapping("changeIdentity")
+    public ResultMap<Integer> changeIdentity(@RequestBody Map data){
+        Integer id = (Integer) data.get("id");
+        Integer identity = Integer.valueOf((String)data.get("identity"));
+        this.authService.changeIdentity(id,identity);
+        return new ResultMap<>(200,"成功",null);
+    }
 }

@@ -6,6 +6,7 @@ import cn.dsrank.communitymanagement.entity.DsUser;
 import cn.dsrank.communitymanagement.entity.ResultMap;
 import cn.dsrank.communitymanagement.service.DsBillService;
 import cn.dsrank.communitymanagement.vo.UserBill;
+import cn.dsrank.communitymanagement.vo.UserPayRate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -139,6 +140,15 @@ public class DsBillController {
         res.setCode(200);
         res.setMsg("成功");
         return res;
+    }
+
+    @PostMapping("queryPayRate")
+    public ResultMap<UserPayRate> queryPayRate(){
+        ResultMap<UserPayRate> resultMap = new ResultMap<>();
+        resultMap.setData(this.dsBillService.queryPayRate());
+        resultMap.setMsg("成功");
+        resultMap.setCode(200);
+        return resultMap;
     }
 }
 

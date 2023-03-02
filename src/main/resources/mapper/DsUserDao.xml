@@ -90,4 +90,8 @@
         delete from CommunityManagement.ds_User where id = #{id}
     </delete>
 
+    <select id="getUserByPage" resultMap="BaseResultMap">
+        select * from ds_User limit #{start},#{count}
+    </select>
+
 </mapper>

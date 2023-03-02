@@ -56,4 +56,8 @@ public interface DsUserService {
     DsUser queryByName(String name);
 
     int queryCount();
+
+    Integer getUserCount();
+
+    List<DsUser> getUserByPage(Integer page, Integer count);
 }

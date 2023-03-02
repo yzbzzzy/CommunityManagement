@@ -57,7 +57,7 @@ public class DsPropertyfeeController {
      * @param id 主键
      * @return 单条数据
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
     @GetMapping("{id}")
     public ResponseEntity<DsPropertyfee> queryById(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(this.dsPropertyfeeService.queryById(id));
@@ -69,7 +69,7 @@ public class DsPropertyfeeController {
      * @param dsPropertyfee 实体
      * @return 新增结果
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
     @PostMapping
     public ResponseEntity<DsPropertyfee> add(DsPropertyfee dsPropertyfee) {
         return ResponseEntity.ok(this.dsPropertyfeeService.insert(dsPropertyfee));
@@ -81,7 +81,7 @@ public class DsPropertyfeeController {
      * @param dsPropertyfee 实体
      * @return 编辑结果
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
     @PutMapping
     public ResponseEntity<DsPropertyfee> edit(DsPropertyfee dsPropertyfee) {
         return ResponseEntity.ok(this.dsPropertyfeeService.update(dsPropertyfee));
@@ -93,12 +93,12 @@ public class DsPropertyfeeController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
     @DeleteMapping
     public ResponseEntity<Boolean> deleteById(Integer id) {
         return ResponseEntity.ok(this.dsPropertyfeeService.deleteById(id));
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
     @PostMapping("querypage")
     public ResultMap<List<TableFee>> getPageData(@RequestBody Map data){
         Integer count = (Integer) data.get("count");
@@ -111,7 +111,7 @@ public class DsPropertyfeeController {
         return resultMap;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
     @PostMapping("add")
     public ResultMap<Object> addFee(@RequestBody DsPropertyfee form){
         ResultMap<Object> map = new ResultMap<>();
@@ -128,7 +128,7 @@ public class DsPropertyfeeController {
 
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
     @PostMapping("count")
     public ResultMap<Integer> getCount(){
         Integer count = dsPropertyfeeService.queryCount();

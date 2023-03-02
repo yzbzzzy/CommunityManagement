@@ -38,7 +38,7 @@ public class DsBuildingController {
         return this.dsBuildingService.queryById(id);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
     @PostMapping("/add")
     public Map<String,Object> addBuilding(@RequestBody Map params) {
         HashMap<String, Object> map = new HashMap<>();
@@ -59,7 +59,7 @@ public class DsBuildingController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
     @PostMapping("infos")
     public Map<String,Object> getBuildingsInfo(){
         Map<String, Object> map = new HashMap<>();

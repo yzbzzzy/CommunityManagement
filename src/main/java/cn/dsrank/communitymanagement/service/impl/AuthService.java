@@ -51,7 +51,9 @@ public class AuthService {
             // 如果用户角色为空，则默认赋予 ROLE_USER 角色
             if (user.getIdentity()==0) {
                 roles = Collections.singletonList(UserRoleConstants.ROLE_USER);
-            }else{
+            } else if (user.getIdentity()==3) {
+                roles=Collections.singletonList(UserRoleConstants.ROLE_SUPER_ADMIN);
+            } else{
                 roles = Collections.singletonList(UserRoleConstants.ROLE_ADMIN);
             }
             // 生成 token
@@ -109,12 +111,22 @@ public class AuthService {
         DsUserinfo info = dsUserinfoService.queryById(user.getId());
         System.out.println(info.toString());
         map.put("name",user.getUsername());
-        map.put("roles",user.getIdentity()==1?UserRoleConstants.ROLE_ADMIN:UserRoleConstants.ROLE_USER);
+        map.put("roles",user.getIdentity()==1?UserRoleConstants.ROLE_ADMIN:user.getIdentity()==3?UserRoleConstants.ROLE_SUPER_ADMIN:UserRoleConstants.ROLE_USER);
         map.put("avatar",info.getIcon());
         map.put("introduction","");
         return map;
     }
 
+    public void resetPassword(int id,String password){
+        DsUser dsUser = this.userService.queryById(id);
+        dsUser.setPassword(bCryptPasswordEncoder. encode(password+dsUser.getSalt()));
+        this.userService.update(dsUser);
+    }
 
+    public void changeIdentity(int id,int identity){
+        DsUser dsUser = this.userService.queryById(id);
+        dsUser.setIdentity(identity);
+        this.userService.update(dsUser);
+    }
 
 }

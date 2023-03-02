@@ -14,17 +14,18 @@
         <result property="email" column="email" jdbcType="VARCHAR"/>
         <result property="licenseplatenumber" column="licenseplateNumber" jdbcType="VARCHAR"/>
         <result property="icon" column="icon" jdbcType="VARCHAR"/>
+        <result property="stall" column="stall" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          userId, trueName, phone, buildingId, roomId, age, gander, email, licenseplateNumber, icon
+          userId, trueName, phone, buildingId, roomId, age, gander, email, licenseplateNumber, icon,stall
         from CommunityManagement.ds_UserInfo
         where userId = #{userid}
     </select>
     <select id="getRandUserinfo" resultMap="BaseResultMap">
-        with tmp as (select * from ds_UserInfo where roomId is null) select * from tmp order by rand() limit 1
+        with tmp as (select * from ds_UserInfo where roomId is not null) select * from tmp order by rand() limit 1
     </select>
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
@@ -37,7 +38,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          userId, trueName, phone, buildingId, roomId, age, gander, email, licenseplateNumber, icon
+          userId, trueName, phone, buildingId, roomId, age, gander, email, licenseplateNumber, icon,stall
         from CommunityManagement.ds_UserInfo
         <where>
             <if test="userid != null">
@@ -109,6 +110,9 @@
             </if>
             <if test="icon != null and icon != ''">
                 icon = #{icon},
+            </if>
+            <if test="stall != null">
+                stall = #{stall}
             </if>
         </set>
         where userId = #{userid}

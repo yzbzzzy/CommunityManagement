@@ -18,6 +18,11 @@
 
     </resultMap>
 
+    <resultMap id="PaidRate" type="cn.dsrank.communitymanagement.vo.UserPayRate">
+        <result property="paid" column="paid" jdbcType="INTEGER"/>
+        <result property="total" column="total" jdbcType="INTEGER"/>
+    </resultMap>
+
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
@@ -145,6 +150,17 @@
         ds_PropertyFee  fee on bill.propertyFeeId=fee.id
         LEFT JOIN
         ds_Building  building on building.id in  (select buildingId from ds_UserInfo where userId = 142 ) where userid =#{userid}
+
+    </select>
+    <select id="queryPayRate" resultMap="PaidRate">
+        with  tbe as (select 'paidUser' as name ,count(1) as value  from ds_Bill
+        where propertyFeeId = (select id from ds_PropertyFee ORDER BY  time desc  limit 1) union all
+        select 'UserCount' as name ,a.num - b.num  as value  from
+        (select count(1) num from ds_UserInfo where in_time &lt; (select time from ds_PropertyFee ORDER BY time desc limit 1)) a,
+        (select count(1) num from ds_User where identity  = 1 )b
+        )
+        select a.value as 'paid',b.value as 'total' from tbe a,tbe b where a.name = 'paidUser' and b.name='UserCount'
+
 
     </select>
 </mapper>

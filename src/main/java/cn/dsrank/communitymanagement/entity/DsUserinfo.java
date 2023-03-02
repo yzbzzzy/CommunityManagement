@@ -31,6 +31,15 @@ public class DsUserinfo implements Serializable {
     
     private String icon;
 
+    private Integer stall;
+
+    public Integer getStall() {
+        return stall;
+    }
+
+    public void setStall(Integer stall) {
+        this.stall = stall;
+    }
 
     public Integer getUserid() {
         return userid;

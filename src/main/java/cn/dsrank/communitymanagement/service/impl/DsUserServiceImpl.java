@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * (DsUser)表服务实现类
@@ -85,5 +86,15 @@ public class DsUserServiceImpl implements DsUserService {
     @Override
     public int queryCount() {
         return this.dsUserDao.queryCount();
+    }
+
+    @Override
+    public Integer getUserCount() {
+        return Optional.ofNullable(this.dsUserDao.queryCount()).orElse(0);
+    }
+
+    @Override
+    public List<DsUser> getUserByPage(Integer page, Integer count) {
+        return this.dsUserDao.getUserByPage((page-1)*count,count);
     }
 }

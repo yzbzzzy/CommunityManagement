@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dsrank.communitymanagement.dao.DsStallDao">
+
+    <resultMap id="BaseResultMap" type="cn.dsrank.communitymanagement.entity.DsStall">
+        <!--@Table ds_Stall-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userid" column="userId" jdbcType="INTEGER"/>
+        <result property="starttime" column="startTime" jdbcType="TIMESTAMP"/>
+        <result property="endtime" column="endTime" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="StallInfo" type="cn.dsrank.communitymanagement.vo.StallInfo">
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="startTime" column="startTime" jdbcType="TIMESTAMP"/>
+        <result property="licenseplateNumber" column="licenseplateNumber" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, userId, startTime, endTime, status
+        from ds_Stall
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, userId, startTime, endTime, status
+        from ds_Stall
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userid != null">
+                and userId = #{userid}
+            </if>
+            <if test="starttime != null">
+                and startTime = #{starttime}
+            </if>
+            <if test="endtime != null">
+                and endTime = #{endtime}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, userId, startTime, endTime, status
+        from CommunityManagement.ds_Stall
+    <!--统计总行数-->
+    </select>
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from ds_Stall
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userid != null">
+                and userId = #{userid}
+            </if>
+            <if test="starttime != null">
+                and startTime = #{starttime}
+            </if>
+            <if test="endtime != null">
+                and endTime = #{endtime}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into ds_Stall(userId, startTime, endTime, status)
+        values (#{userid}, #{starttime}, #{endtime}, #{status})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into ds_Stall(userId, startTime, endTime, status)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.userid}, #{entity.starttime}, #{entity.endtime}, #{entity.status})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into ds_Stall(userId, startTime, endTime, status)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userid}, #{entity.starttime}, #{entity.endtime}, #{entity.status})
+        </foreach>
+        on duplicate key update
+        userId = values(userId),
+        startTime = values(startTime),
+        endTime = values(endTime),
+        status = values(status)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update ds_Stall
+        <set>
+            <if test="userid != null">
+                userId = #{userid},
+            </if>
+            <if test="starttime != null">
+                startTime = #{starttime},
+            </if>
+            <if test="endtime != null">
+                endTime = #{endtime},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from ds_Stall where id = #{id}
+    </delete>
+
+    <select id="queryByStatus" resultType="java.lang.Integer">
+        select count(1) from  ds_Stall where status = #{status}
+    </select>
+
+    <select id="queryTotal" resultType="java.lang.Integer">
+        select count(1) from ds_Stall
+    </select>
+    <update id="randStall">
+        update ds_Stall set
+            userId = (select userId  from ds_UserInfo where ds_UserInfo.licenseplateNumber is not  null ORDER BY rand() limit 1),
+            startTime=CURRENT_TIME(),
+            STATUS=1
+        where status = 0 ORDER BY RAND() limit 1
+    </update>
+    
+    <select id="queryStallInfo" resultMap="StallInfo">
+        select b.phone,a.startTime,b.licenseplateNumber from ds_Stall a LEFT JOIN ds_UserInfo b on a.userId = b.userId where status =1 order by starttime desc limit #{start},#{count}
+    </select>
+
+    <select id="queryStallByKeyword" resultMap="StallInfo">
+        select b.phone,a.startTime,b.licenseplateNumber from ds_Stall a LEFT JOIN ds_UserInfo b on a.userId = b.userId where status =1 and licenseplateNumber like "%"#{keyword}"%" order by starttime desc LIMIT 0,10
+    </select>
+
+    <update id="postCar">
+        update ds_Stall set status = 1,
+                            userId=#{id},
+                            startTime=CURRENT_TIME()
+                        where status = 0 ORDER BY RAND() limit 1
+    </update>
+    <update id="driveCar">
+        update ds_Stall set status = 0,
+                            userId = null,
+                            StartTime = null
+        where userId = #{id}
+    </update>
+
+    <update id="buyStall">
+        update ds_Stall set userId=#{id},status =2 where status = 0 order by rand()  limit 1
+    </update>
+</mapper>
+
