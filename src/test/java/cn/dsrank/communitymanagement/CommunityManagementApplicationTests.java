@@ -22,62 +22,62 @@ import java.util.Optional;
 @Slf4j
 @SpringBootTest
 class CommunityManagementApplicationTests {
-
-    @Resource
-    DsBuildingDao dsBuildingDao;
-
-    @Resource
-    DsStallDao dsStallDao;
-    @Resource
-    DsRoomDao dsRoomDao;
-    @Resource
-    DsUserinfoDao dsUserinfoDao;
-
-
-    @Test
-    void contextLoads() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        String test = bCryptPasswordEncoder.encode("test");
-        System.out.println(test);
-    }
-    @Test
-    void getLastId(){
-        Optional<Integer> lastId = Optional.ofNullable(null);
-        System.out.println(lastId.orElse(0));
-    }
-    @Test
-     void setHome(){
-        for(int i = 0;i<150;i++){
-            DsRoom room = dsRoomDao.getRandRoom();
-            DsUserinfo userinfo = dsUserinfoDao.getRandUserinfo();
-            userinfo.setBuildingid(room.getBuildingid());
-            userinfo.setRoomid(room.getId());
-            room.setStatus(1);
-            dsRoomDao.update(room);
-            dsUserinfoDao.update(userinfo);
-        }
-
-    }
-
-    @Test
-    void testSelect(){
-        Integer integer = dsUserinfoDao.queryCountBefore(1);
-        System.out.println(integer);
-    }
-
-    @Test
-    void addInfo(){
-        for(int i = 0 ;i<300;i++){
-        DsUserinfo randUserinfo = this.dsUserinfoDao.getRandUserinfo();
-        randUserinfo.setPhone(RandData.createMobile(i%3));
-        dsUserinfoDao.update(randUserinfo);
-        }
-    }
-
-    @Test
-    void randPost(){
-        for(int i=0;i<50;i++)
-        dsStallDao.randStall();
-    }
+//
+//    @Resource
+//    DsBuildingDao dsBuildingDao;
+//
+//    @Resource
+//    DsStallDao dsStallDao;
+//    @Resource
+//    DsRoomDao dsRoomDao;
+//    @Resource
+//    DsUserinfoDao dsUserinfoDao;
+//
+//
+//    @Test
+//    void contextLoads() {
+//        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+//        String test = bCryptPasswordEncoder.encode("test");
+//        System.out.println(test);
+//    }
+//    @Test
+//    void getLastId(){
+//        Optional<Integer> lastId = Optional.ofNullable(null);
+//        System.out.println(lastId.orElse(0));
+//    }
+//    @Test
+//     void setHome(){
+//        for(int i = 0;i<150;i++){
+//            DsRoom room = dsRoomDao.getRandRoom();
+//            DsUserinfo userinfo = dsUserinfoDao.getRandUserinfo();
+//            userinfo.setBuildingid(room.getBuildingid());
+//            userinfo.setRoomid(room.getId());
+//            room.setStatus(1);
+//            dsRoomDao.update(room);
+//            dsUserinfoDao.update(userinfo);
+//        }
+//
+//    }
+//
+//    @Test
+//    void testSelect(){
+//        Integer integer = dsUserinfoDao.queryCountBefore(1);
+//        System.out.println(integer);
+//    }
+//
+//    @Test
+//    void addInfo(){
+//        for(int i = 0 ;i<300;i++){
+//        DsUserinfo randUserinfo = this.dsUserinfoDao.getRandUserinfo();
+//        randUserinfo.setPhone(RandData.createMobile(i%3));
+//        dsUserinfoDao.update(randUserinfo);
+//        }
+//    }
+//
+//    @Test
+//    void randPost(){
+//        for(int i=0;i<50;i++)
+//        dsStallDao.randStall();
+//    }
 
 }

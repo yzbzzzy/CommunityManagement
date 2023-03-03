@@ -5,7 +5,6 @@ import cn.dsrank.communitymanagement.entity.DsUserinfo;
 import cn.dsrank.communitymanagement.entity.ResultMap;
 import cn.dsrank.communitymanagement.service.DsUserService;
 import cn.dsrank.communitymanagement.service.DsUserinfoService;
-import org.apache.catalina.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;

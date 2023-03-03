@@ -8,7 +8,6 @@ import cn.dsrank.communitymanagement.service.DsCommentService;
 import cn.dsrank.communitymanagement.service.DsFeedbackService;
 import cn.dsrank.communitymanagement.service.DsUserService;
 import cn.dsrank.communitymanagement.vo.UserComment;
-import org.apache.catalina.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
