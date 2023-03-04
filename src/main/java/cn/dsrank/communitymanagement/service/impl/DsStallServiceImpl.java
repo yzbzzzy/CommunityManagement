@@ -3,6 +3,7 @@ package cn.dsrank.communitymanagement.service.impl;
 import cn.dsrank.communitymanagement.dao.DsStallbillDao;
 import cn.dsrank.communitymanagement.entity.DsStall;
 import cn.dsrank.communitymanagement.dao.DsStallDao;
+import cn.dsrank.communitymanagement.entity.DsStallbill;
 import cn.dsrank.communitymanagement.service.DsStallService;
 import cn.dsrank.communitymanagement.service.DsStallbillService;
 import cn.dsrank.communitymanagement.utils.DateUtils;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.Resource;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,8 +96,9 @@ public class DsStallServiceImpl implements DsStallService {
 
     @Override
     public void multipleAdd(int amount) {
-        for(int i =0;i<amount;i++)
-        this.dsStallDao.insert(new DsStall());
+        for(int i =0;i<amount;i++) {
+            this.dsStallDao.insert(new DsStall());
+        }
     }
 
     /**
@@ -202,6 +206,16 @@ public class DsStallServiceImpl implements DsStallService {
     @Override
     public void buyStall(int id) {
         this.dsStallDao.buyStall(id);
+    }
+
+    @Override
+    public void buyStallByMouth(int id) {
+        Calendar ca = Calendar.getInstance();
+        ca.setTime(new Date());
+        ca.add(Calendar.MONTH, +1);
+        Date time = ca.getTime();
+        this.dsStallDao.buyStallByMouth(id,time);
+        this.dsStallbillDao.buyStallByMouth(id,time);
     }
 
 }

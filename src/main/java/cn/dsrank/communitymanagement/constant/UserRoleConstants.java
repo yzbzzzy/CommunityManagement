@@ -11,4 +11,6 @@ public class UserRoleConstants {
 
     public static final String ROLE_SUPER_ADMIN = "ROLE_SUPER_ADMIN";
     public static final String ROLE_NO = "ROLE_NO";
+    public static final String ROLE_RENTER="ROLE_RENTER";
+    public static final String ROLE_LEASER="ROLE_LEASER";
 }

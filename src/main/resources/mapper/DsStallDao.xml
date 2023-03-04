@@ -81,7 +81,7 @@
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into ds_Stall(userId, startTime, endTime, status)
-        values (#{userid}, #{starttime}, #{endtime}, #{status})
+        values (#{userid}, #{starttime}, #{endtime},0)
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
@@ -168,6 +168,10 @@
 
     <update id="buyStall">
         update ds_Stall set userId=#{id},status =2 where status = 0 order by rand()  limit 1
+    </update>
+
+    <update id="buyStallByMouth">
+        update ds_Stall set userId=#{id},status=4,endTime=#{time},startTime=current_time where status = 0 order by rand() limit 1
     </update>
 </mapper>
 

@@ -94,4 +94,8 @@
         select * from ds_User limit #{start},#{count}
     </select>
 
+    <select id="getUserWithNoRoom" resultMap="BaseResultMap">
+        select * from ds_User where id not in (select userId from ds_UserInfo where roomId is not null)
+    </select>
+
 </mapper>

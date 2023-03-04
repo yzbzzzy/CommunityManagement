@@ -53,7 +53,11 @@ public class AuthService {
                 roles = Collections.singletonList(UserRoleConstants.ROLE_USER);
             } else if (user.getIdentity()==3) {
                 roles=Collections.singletonList(UserRoleConstants.ROLE_SUPER_ADMIN);
-            } else{
+            } else if(user.getIdentity()==2){
+                roles=Collections.singletonList(UserRoleConstants.ROLE_RENTER);
+            }else if(user.getIdentity()==4){
+                roles=Collections.singletonList(UserRoleConstants.ROLE_LEASER);
+            }else{
                 roles = Collections.singletonList(UserRoleConstants.ROLE_ADMIN);
             }
             // 生成 token
@@ -109,9 +113,21 @@ public class AuthService {
         DsUser user = userService.queryByName(username);
         System.out.println(user.toString());
         DsUserinfo info = dsUserinfoService.queryById(user.getId());
+        String roles=null;
+        if (user.getIdentity()==0) {
+            roles = UserRoleConstants.ROLE_USER;
+        } else if (user.getIdentity()==3) {
+            roles=UserRoleConstants.ROLE_SUPER_ADMIN;
+        } else if(user.getIdentity()==2){
+            roles=UserRoleConstants.ROLE_RENTER;
+        }else if(user.getIdentity()==4){
+            roles=UserRoleConstants.ROLE_LEASER;
+        }else{
+            roles =UserRoleConstants.ROLE_ADMIN;
+        }
         System.out.println(info.toString());
         map.put("name",user.getUsername());
-        map.put("roles",user.getIdentity()==1?UserRoleConstants.ROLE_ADMIN:user.getIdentity()==3?UserRoleConstants.ROLE_SUPER_ADMIN:UserRoleConstants.ROLE_USER);
+        map.put("roles",roles);
         map.put("avatar",info.getIcon());
         map.put("introduction","");
         return map;

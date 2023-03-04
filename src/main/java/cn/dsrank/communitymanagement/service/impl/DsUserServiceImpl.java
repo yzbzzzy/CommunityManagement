@@ -97,4 +97,9 @@ public class DsUserServiceImpl implements DsUserService {
     public List<DsUser> getUserByPage(Integer page, Integer count) {
         return this.dsUserDao.getUserByPage((page-1)*count,count);
     }
+
+    @Override
+    public List<DsUser> getUserWithNoRoom() {
+        return this.dsUserDao.getUserWithNoRoom();
+    }
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dsrank.communitymanagement.dao.DsLeaseDao">
+
+    <resultMap id="BaseResultMap" type="cn.dsrank.communitymanagement.entity.DsLease">
+        <!--@Table ds_Lease-->
+        <result property="userid" column="userId" jdbcType="INTEGER"/>
+        <result property="starttime" column="startTime" jdbcType="TIMESTAMP"/>
+        <result property="endtime" column="endTime" jdbcType="TIMESTAMP"/>
+        <result property="hostid" column="hostId" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          userId, startTime, endTime, hostId
+        from CommunityManagement.ds_Lease
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          userId, startTime, endTime, hostId
+        from CommunityManagement.ds_Lease
+        <where>
+            <if test="userid != null">
+                and userId = #{userid}
+            </if>
+            <if test="starttime != null">
+                and startTime = #{starttime}
+            </if>
+            <if test="endtime != null">
+                and endTime = #{endtime}
+            </if>
+            <if test="hostid != null">
+                and hostId = #{hostid}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="" useGeneratedKeys="true">
+        insert into CommunityManagement.ds_Lease(userId, startTime, endTime, hostId)
+        values (#{userid}, #{starttime}, #{endtime}, #{hostid})
+    </insert>
+
+
+</mapper>

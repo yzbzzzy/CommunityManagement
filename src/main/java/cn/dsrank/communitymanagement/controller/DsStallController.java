@@ -149,5 +149,10 @@ public class DsStallController {
         this.dsUserinfoService.update(dsUserinfo);
         return new ResultMap<>(200,"成功",null);
     }
+    @PostMapping("buyStallByMouth/{id}")
+    public ResultMap<Object> buyStallByMouth(@PathVariable int id){
+        this.dsStallService.buyStallByMouth(id);
+        return new ResultMap<>(200,"成功",null);
+    }
 }
 

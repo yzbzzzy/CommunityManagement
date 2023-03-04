@@ -3,6 +3,8 @@ package cn.dsrank.communitymanagement.dao;
 import cn.dsrank.communitymanagement.entity.DsStallbill;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -125,5 +127,7 @@ public interface DsStallbillDao {
      * @return java.util.List<cn.dsrank.communitymanagement.entity.DsStallbill>
      **/
     List<DsStallbill> queryUserBill(Integer id);
+
+    void buyStallByMouth(int id, Date time);
 }
 

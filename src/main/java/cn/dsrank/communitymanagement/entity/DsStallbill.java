@@ -63,5 +63,6 @@ public class DsStallbill implements Serializable {
         this.fee = fee;
     }
 
+
 }
 

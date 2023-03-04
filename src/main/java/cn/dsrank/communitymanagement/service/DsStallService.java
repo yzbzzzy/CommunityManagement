@@ -148,4 +148,6 @@ public interface DsStallService {
     void driveCar(int id);
 
     void buyStall(int id);
+
+    void buyStallByMouth(int id);
 }

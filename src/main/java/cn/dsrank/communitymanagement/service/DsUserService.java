@@ -60,4 +60,6 @@ public interface DsUserService {
     Integer getUserCount();
 
     List<DsUser> getUserByPage(Integer page, Integer count);
+
+    List<DsUser> getUserWithNoRoom();
 }

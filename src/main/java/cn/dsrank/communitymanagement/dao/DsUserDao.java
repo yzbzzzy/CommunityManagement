@@ -68,4 +68,6 @@ public interface DsUserDao {
     int queryCount();
 
     List<DsUser> getUserByPage(int start, Integer count);
+
+    List<DsUser> getUserWithNoRoom();
 }

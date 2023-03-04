@@ -139,5 +139,8 @@
     <select id="queryUserBill" resultMap="BaseResultMap">
         select * from ds_StallBill where userId = #{id} order by startTime desc
     </select>
+    <insert id="buyStallByMouth">
+        insert into ds_StallBill(fee,userId,endTime) select  a,#{id},#{time}  from (select 300 * (select value from ds_config) as a) groups
+    </insert>
 </mapper>
 

@@ -4,6 +4,8 @@ import cn.dsrank.communitymanagement.entity.DsStall;
 import cn.dsrank.communitymanagement.vo.StallInfo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -147,5 +149,7 @@ public interface DsStallDao {
     void driveCar(int id);
 
     void buyStall(int id);
+
+    void buyStallByMouth(int id, Date time);
 }
 

@@ -78,7 +78,9 @@ public class DsUserController {
         List<DsUser> userByPage = this.dsUserService.getUserByPage(page, count);
         return new ResultMap<>(200,"成功",userByPage);
     }
-
-
+    @PostMapping("getUserWithNoRoom")
+    public ResultMap<List<DsUser>> getUserWithNoRoom(){
+        return new ResultMap<>(200,"成功",this.dsUserService.getUserWithNoRoom());
+    }
 
 }
