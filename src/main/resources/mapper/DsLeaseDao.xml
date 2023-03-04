@@ -45,6 +45,9 @@
         insert into CommunityManagement.ds_Lease(userId, startTime, endTime, hostId)
         values (#{userid}, #{starttime}, #{endtime}, #{hostid})
     </insert>
+    <select id="getLeaser" resultType="java.lang.Integer">
+        select  hostId from ds_Lease where userId = #{id}
+    </select>
 
 
 </mapper>

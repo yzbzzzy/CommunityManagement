@@ -1,10 +1,7 @@
 package cn.dsrank.communitymanagement.service.impl;
 
-import cn.dsrank.communitymanagement.dao.DsBillDao;
-import cn.dsrank.communitymanagement.dao.DsBuildingDao;
-import cn.dsrank.communitymanagement.dao.DsUserinfoDao;
+import cn.dsrank.communitymanagement.dao.*;
 import cn.dsrank.communitymanagement.entity.DsPropertyfee;
-import cn.dsrank.communitymanagement.dao.DsPropertyfeeDao;
 import cn.dsrank.communitymanagement.service.DsBuildingService;
 import cn.dsrank.communitymanagement.service.DsPropertyfeeService;
 import cn.dsrank.communitymanagement.vo.TableFee;
@@ -37,6 +34,8 @@ public class DsPropertyfeeServiceImpl implements DsPropertyfeeService {
     @Resource
     private DsBillDao dsBillDao;
 
+    @Resource
+    private DsLeaseDao dsLeaseDao;
     @Resource
     private DsBuildingDao dsBuildingDao;
     /**
@@ -125,15 +124,21 @@ public class DsPropertyfeeServiceImpl implements DsPropertyfeeService {
 
     @Override
     public List<UserTableFee> queryUserPayData(int userid, int start, int count) {
+        Integer leaser = this.dsLeaseDao.getLeaser(userid);
+        int id=userid;
+        if(leaser!=null){
+            userid=leaser;
+        }
         List<DsPropertyfee> data = dsPropertyfeeDao.queryUserByPage(userid, start, count);
         ArrayList<UserTableFee> fees = new ArrayList<UserTableFee>();
+        int finalUserid = userid;
         data.forEach(e->{
             UserTableFee i = new UserTableFee(e);
-            i.setStatus(dsBillDao.queryUserBill(userid,e.getId())==null?0:1);
+            i.setStatus(dsBillDao.queryUserBill(finalUserid,e.getId())==null?0:1);
 //            if(i.getStatus()==1){
 //                i.setTime(dsBillDao.queryUserBill(userid,e.getId()).getDate());
 //            }
-            i.setPrice(i.getPrice()*dsBuildingDao.getAreaByUserId(userid));
+            i.setPrice(i.getPrice()*dsBuildingDao.getAreaByUserId(finalUserid));
             fees.add(i);
         });
 
