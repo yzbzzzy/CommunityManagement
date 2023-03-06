@@ -90,4 +90,7 @@
     <select id="getAreaByUserId" resultType="java.lang.Float">
         select area from ds_Building where ds_Building.id = (select buildingId from CommunityManagement.ds_UserInfo where userId=#{userid})
     </select>
+    <select id="getAll" resultMap="BaseResultMap">
+        select * from ds_Building
+    </select>
 </mapper>

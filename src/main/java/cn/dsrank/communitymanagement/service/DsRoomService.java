@@ -5,6 +5,8 @@ import cn.dsrank.communitymanagement.entity.DsRoom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
 /**
  * (DsRoom)表服务接口
  *
@@ -62,6 +64,6 @@ public interface DsRoomService {
     Integer getEmpRooms(int buildingId);
 
     Integer getPreRooms(int buildingId);
-
+    List<DsRoom> queryByBuilding(int id);
 
 }

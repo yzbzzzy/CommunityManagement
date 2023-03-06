@@ -70,4 +70,5 @@ public interface DsBuildingDao {
     DsBuildingInfo getBuildInfo(int buildingId);
 
     float getAreaByUserId(int userid);
+    List<DsBuilding> getAll();
 }

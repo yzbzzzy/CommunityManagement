@@ -145,6 +145,9 @@
         select count(1) from ds_Room where buildingId =#{buildingId} and floor =1
     </select>
 
+    <select id="queryByBuilding" resultMap="BaseResultMap">
+        select * from ds_Room where buildingId = #{id} and status =0
+    </select>
 
 </mapper>
 

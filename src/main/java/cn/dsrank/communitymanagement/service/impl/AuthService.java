@@ -102,6 +102,8 @@ public class AuthService {
         userService.insert(dsUser);
         DsUserinfo userinfo = new DsUserinfo();
         userinfo.setUserid(userService.queryByName(dsUser.getUsername()).getId());
+        userinfo.setRoomid(dsUser.getRoomId());
+        userinfo.setBuildingid(dsUser.getBuildingId());
         dsUserinfoService.insert(userinfo);
         map.put("code",200);
         map.put("msg","注册成功");

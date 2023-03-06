@@ -21,6 +21,24 @@ public class DsUser implements Serializable {
     
     private Integer identity;
 
+    private Integer roomId;
+    private Integer buildingId;
+
+    public Integer getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(Integer roomId) {
+        this.roomId = roomId;
+    }
+
+    public Integer getBuildingId() {
+        return buildingId;
+    }
+
+    public void setBuildingId(Integer buildingId) {
+        this.buildingId = buildingId;
+    }
 
     public Integer getId() {
         return id;

@@ -107,5 +107,10 @@ public class DsBuildingServiceImpl implements DsBuildingService {
         return infos;
     }
 
+    @Override
+    public List<DsBuilding> getAll() {
+        return this.dsBuildingDao.getAll();
+    }
+
 
 }

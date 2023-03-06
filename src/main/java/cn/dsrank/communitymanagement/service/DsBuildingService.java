@@ -57,6 +57,6 @@ public interface DsBuildingService {
     void addBuilding(int f,int r,String desc,float area);
 
     List<DsBuildingInfo> getBuildingInfo();
-
+    List<DsBuilding> getAll();
 
 }

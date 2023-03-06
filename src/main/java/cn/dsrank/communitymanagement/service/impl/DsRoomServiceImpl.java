@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * (DsRoom)表服务实现类
@@ -99,6 +100,11 @@ public class DsRoomServiceImpl implements DsRoomService {
     @Override
     public Integer getPreRooms(int buildingId) {
         return null;
+    }
+
+    @Override
+    public List<DsRoom> queryByBuilding(int id) {
+        return this.dsRoomDao.queryByBuilding(id);
     }
 
 

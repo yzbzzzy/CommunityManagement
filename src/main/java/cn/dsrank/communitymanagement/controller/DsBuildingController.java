@@ -2,6 +2,7 @@ package cn.dsrank.communitymanagement.controller;
 
 import cn.dsrank.communitymanagement.entity.DsBuilding;
 import cn.dsrank.communitymanagement.entity.DsBuildingInfo;
+import cn.dsrank.communitymanagement.entity.ResultMap;
 import cn.dsrank.communitymanagement.service.DsBuildingService;
 import org.hibernate.annotations.Parameter;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -57,7 +58,11 @@ public class DsBuildingController {
         map.put("msg","添加成功");
         return map;
     }
-
+    @PostMapping("getAll")
+    public ResultMap<Object> getAll(){
+        List<DsBuilding> all = this.dsBuildingService.getAll();
+        return  new ResultMap<>(200,"成功",all);
+    }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
     @PostMapping("infos")

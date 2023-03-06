@@ -70,7 +70,6 @@ public class AuthController {
     @PostMapping("register")
     public Map<String,Object> register(@RequestBody DsUser register){
         Map<String, Object> map = authService.register(register);
-
         return map;
     }
 

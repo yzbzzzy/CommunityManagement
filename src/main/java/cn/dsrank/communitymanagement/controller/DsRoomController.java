@@ -1,6 +1,7 @@
 package cn.dsrank.communitymanagement.controller;
 
 import cn.dsrank.communitymanagement.entity.DsRoom;
+import cn.dsrank.communitymanagement.entity.ResultMap;
 import cn.dsrank.communitymanagement.service.DsRoomService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * (DsRoom)表控制层
@@ -16,7 +18,7 @@ import javax.annotation.Resource;
  * @since 2023-01-11 11:30:19
  */
 @RestController
-@RequestMapping("dsRoom")
+@RequestMapping("/api/dsRoom")
 public class DsRoomController {
     /**
      * 服务对象
@@ -80,5 +82,10 @@ public class DsRoomController {
         return ResponseEntity.ok(this.dsRoomService.deleteById(id));
     }
 
+    @PostMapping("getRoomById/{id}")
+    public ResultMap<Object> getRoomById(@PathVariable int id){
+        List<DsRoom> dsRooms = this.dsRoomService.queryByBuilding(id);
+        return  new ResultMap<>(200,"成功",dsRooms);
+    }
 }
 

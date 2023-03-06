@@ -79,5 +79,7 @@ public interface DsRoomDao {
      */
     int deleteById(Integer id);
     DsRoom getRandRoom();
+
+    List<DsRoom> queryByBuilding(int id);
 }
 
